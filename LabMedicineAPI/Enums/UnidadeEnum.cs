@@ -6,11 +6,11 @@ namespace LabMedicineAPI.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UnidadeEnum
     {
-        mg,
-        mcg,
-        g,
-        mL,
-        Porcentagem
+        mg = 1,
+        mcg = 2,
+        g = 3,
+        mL = 4,
+        Porcentagem = 5
 
     }
 }

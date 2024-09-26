@@ -5,8 +5,8 @@ namespace LabMedicineAPI.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TipoEnum
     {
-        Medico,
-        Administrador,
-        Enfermeiro
+        Medico = 1,
+        Administrador = 2,
+        Enfermeiro = 3
     }
 }

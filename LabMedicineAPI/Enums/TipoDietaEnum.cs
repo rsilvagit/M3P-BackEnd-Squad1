@@ -5,12 +5,12 @@ namespace LabMedicineAPI.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TipoDietaEnum
     {
-        LowCard,
-        Dash,
-        Paleolitica,
-        Cetogenica,
-        Dukan,
-        Mediterranea,
-        Outra
+        LowCarb = 1,
+        Dash = 2,
+        Paleolitica = 3,
+        Cetogenica = 4,
+        Dukan = 5,
+        Mediterranea = 6,
+        Outra = 7
     }
 }
