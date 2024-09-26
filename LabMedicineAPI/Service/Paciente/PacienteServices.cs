@@ -12,12 +12,14 @@ namespace LabMedicineAPI.Service.Paciente
         readonly IRepository<PacienteModel> _repository;
         readonly IMapper _mapper;
         readonly IRepository<EnderecoModel> _enderecoRepository;
+        readonly ILogger<PacienteServices> _logger;
 
-        public PacienteServices(IRepository<PacienteModel> repository, IMapper mapper, IRepository<EnderecoModel> enderecoRepository)
+        public PacienteServices(IRepository<PacienteModel> repository, IMapper mapper, IRepository<EnderecoModel> enderecoRepository, ILogger<PacienteServices> logger)
         {
             _repository = repository;
             _mapper = mapper;
             _enderecoRepository = enderecoRepository;
+            _logger = logger;
         }
 
         public IEnumerable<PacienteGetDTO> Get()
@@ -41,12 +43,14 @@ namespace LabMedicineAPI.Service.Paciente
             var conflitoCPF = _repository.GetAll().Where(x => x.CPF == paciente.CPF).FirstOrDefault();
             if (conflitoCPF != null)
             {
+                _logger.LogError($"[{nameof(PacienteServices.CriarPacienteEndereco)}] Já existe um paciente com o CPF informado cadastrado no sistema.");
                 throw new Exception("Já existe um paciente com o CPF informado cadastrado no sistema.");
             }
 
             var conflitoEmail = _repository.GetAll().Where(x => x.Email == paciente.Email).FirstOrDefault();
             if (conflitoEmail != null)
             {
+                _logger.LogError($"[{nameof(PacienteServices.CriarPacienteEndereco)}] Já existe um paciente com o email informado cadastrado no sistema.");
                 throw new Exception("Já existe um paciente com o email informado cadastrado no sistema.");
             }
 
@@ -89,7 +93,7 @@ namespace LabMedicineAPI.Service.Paciente
             }
             else
             {
-
+                _logger.LogError($"[{nameof(PacienteServices.PacienteEnderecoUpdate)}] Não foi localizado o registro com o id = {paciente.Id}.");
                 throw new Exception("Não foi localizado o registro com o id indicado");
             }
         }
@@ -119,26 +123,36 @@ namespace LabMedicineAPI.Service.Paciente
         {
             if (paciente.Consultas != null && paciente.Consultas.Count > 0)
             {
+                _logger.LogWarning($"[{nameof(PacienteServices.VerificarImpedimentosDelecao)}] Não é possível excluir o paciente, pois ele tem consultas vinculadas.{paciente.Consultas}");
+
                 return "Não é possível excluir o paciente, pois ele tem consultas vinculadas.";
             }
 
             if (paciente.Dietas != null && paciente.Dietas.Count > 0)
             {
+                _logger.LogWarning($"[{nameof(PacienteServices.VerificarImpedimentosDelecao)}] Não é possível excluir o paciente, pois ele tem dietas vinculadas.{paciente.Dietas}");
+
                 return "Não é possível excluir o paciente, pois ele tem dietas vinculadas.";
             }
 
             if (paciente.Exames != null && paciente.Exames.Count > 0)
             {
+                _logger.LogWarning($"[{nameof(PacienteServices.VerificarImpedimentosDelecao)}] Não é possível excluir o paciente, pois ele tem exames vinculados.{paciente.Exames}");
+
                 return "Não é possível excluir o paciente, pois ele tem exames vinculados.";
             }
 
             if (paciente.Exercicios != null && paciente.Exercicios.Count > 0)
             {
+                _logger.LogWarning($"[{nameof(PacienteServices.VerificarImpedimentosDelecao)}] Não é possível excluir o paciente, pois ele tem exercicios vinculadas.{paciente.Exercicios}");
+
                 return "Não é possível excluir o paciente, pois ele tem exercícios vinculados.";
             }
 
             if (paciente.Medicamentos != null && paciente.Medicamentos.Count > 0)
             {
+                _logger.LogWarning($"[{nameof(PacienteServices.VerificarImpedimentosDelecao)}] Não é possível excluir o paciente, pois ele tem medicamentos vinculadas.{paciente.Medicamentos}");
+
                 return "Não é possível excluir o paciente, pois ele tem medicamentos vinculados.";
             }
 
