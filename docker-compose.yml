@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  labmedicineapi:
+    image: ${DOCKER_REGISTRY-}labmedicineapi
+    build:
+      context: .
+      dockerfile: LabMedicineAPI/Dockerfile
